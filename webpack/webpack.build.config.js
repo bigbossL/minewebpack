@@ -1,14 +1,15 @@
 const path = require('path');
 const ExtractTextPlugin = require("extract-text-webpack-plugin"); //css分离工具
-const ProgressBarPlugin = require("progress-bar-webpack-plugin");//打包显示进度条
-const HtmlWebpackPlugin = require('html-webpack-plugin');//动态生成html
-const CleanWebpackPlugin =require('clean-webpack-plugin');//每次打包删除之前的文件
+const ProgressBarPlugin = require("progress-bar-webpack-plugin"); //打包显示进度条
+const HtmlWebpackPlugin = require('html-webpack-plugin'); //动态生成html
+const CleanWebpackPlugin = require('clean-webpack-plugin'); //每次打包删除之前的文件
 // const WebpackDevServer=require('webpack-dev-server');//这个是开发用的服务器
 module.exports = {
-    entry: path.resolve(__dirname , '../src/index.tsx'),
+    entry: path.resolve(__dirname, '../src/index.tsx'),
     output: {
-        path:path.resolve(__dirname ,'../dist'),
-        filename: 'js/[name]_[hash].js'
+        path: path.resolve(__dirname, '../dist'),
+        filename: 'js/[name]_[hash].js',
+        libraryTarget: "umd"
     },
     module: {
         rules: [{
@@ -40,22 +41,25 @@ module.exports = {
 
         ]
     },
-//     //配置开发服务器
-//     devServer: {
-//     // contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'assets')],
-//     compress:true,
-//     port: 8080,
-//     hot:true,
-//     inline:true,
-    
-//   },
+    //     //配置开发服务器
+    //     devServer: {
+    //     // contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'assets')],
+    //     compress:true,
+    //     port: 8080,
+    //     hot:true,
+    //     inline:true,
+
+    //   },
+    resolve: {
+    extensions: [".ts", ".tsx", ".js", ".jsx"],
+  },
     plugins: [
         new ExtractTextPlugin("css/[name]_[hash].css"),
         new ProgressBarPlugin(),
         new HtmlWebpackPlugin({
             filename: 'index.html',
-            template: path.resolve(__dirname ,'../public/index.html'),
-            inject:'body',
+            template: path.resolve(__dirname, '../public/index.html'),
+            inject: 'body',
         }),
         new CleanWebpackPlugin(['../dist']),
         // new WebpackDevServer()
