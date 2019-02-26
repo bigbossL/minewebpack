@@ -23,6 +23,22 @@ module.exports = {
                 loader: 'ts-loader'
             },
             {
+                test: /\.less$/,
+                use: ExtractTextPlugin.extract({
+                    // 注意 1
+                    fallback: {
+                        loader: "style-loader"
+                    },
+                    use: [{
+                            loader: "css-loader",
+                        },
+                        {
+                            loader: "less-loader"
+                        }
+                    ]
+                })
+            },
+            {
                 test: /\.scss$/,
                 use: ExtractTextPlugin.extract({
                     // 注意 1
@@ -41,6 +57,7 @@ module.exports = {
 
         ]
     },
+    devtool: 'source-map',
     //     //配置开发服务器
     //     devServer: {
     //     // contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'assets')],
