@@ -1,16 +1,12 @@
 /* app/index.tsx */
 import * as React from 'react'
 import { render } from 'react-dom'
-import { HashRouter,Route,BrowserRouter,Link,Switch } from 'react-router-dom'
-import Item from './pages/Item' 
-import Home from './pages/Home' 
-import About from './pages/About' 
-
-import Button from 'antd/lib/button'
 import './text.less'
 import { MineRouter } from './components/MineRouter';
 
-import {store,dispatch} from './store'
+import getStore from './redux'
+import {createStore} from 'redux'
+import {Provider} from 'react-redux' 
 interface IAppProps {}
 interface IAppState {}
 
@@ -18,12 +14,13 @@ interface IAppState {}
 class App extends React.Component<IAppProps, IAppState> {
 
   public render(): JSX.Element {  
-    let state={
-      no:1
-  }
-    dispatch('add',4);
+    // const store=createStore(reducer)
+    const store=getStore()
     return (
-     <MineRouter></MineRouter>
+      
+      <Provider store={store}>
+             <MineRouter></MineRouter>
+      </Provider>
     )
   }
 }
