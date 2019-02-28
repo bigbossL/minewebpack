@@ -15,10 +15,8 @@ class App extends React.Component<IAppProps, IAppState> {
 
   public render(): JSX.Element {  
     // const store=createStore(reducer)
-    const store=getStore()
     return (
-      
-      <Provider store={store}>
+      <Provider store={getStore()}>
              <MineRouter></MineRouter>
       </Provider>
     )
