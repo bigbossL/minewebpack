@@ -10,7 +10,8 @@
         "watch": true,
         "skipLibCheck": true,
         "moduleResolution":"node",
-        "experimentalDecorators":true
+        "experimentalDecorators":true,
+        "allowSyntheticDefaultImports": true
     },
     "include": [
         // "typings/**/*.d.ts",

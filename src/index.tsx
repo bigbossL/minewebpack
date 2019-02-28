@@ -1,12 +1,13 @@
 /* app/index.tsx */
 import * as React from 'react'
 import { render } from 'react-dom'
-import './text.less'
+// import './text.less'
 import { MineRouter } from './components/MineRouter';
 
 import getStore from './redux'
 import {createStore} from 'redux'
 import {Provider} from 'react-redux' 
+import './css/main.scss'
 interface IAppProps {}
 interface IAppState {}
 

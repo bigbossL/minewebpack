@@ -24,6 +24,7 @@ module.exports = {
             },
             {
                 test: /\.less$/,
+                exclude: /node_modules/,
                 use: ExtractTextPlugin.extract({
                     // 注意 1
                     fallback: {
@@ -39,7 +40,20 @@ module.exports = {
                 })
             },
             {
+                test: /\.css$/,
+                exclude: /node_modules/,
+                use: [
+                     {
+                         loader: 'style-loader'  // 可以把css放在页面上
+                     },
+                     {
+                         loader: 'css-loader'    // 放在后面的先被解析
+                     }
+                ]
+            },
+            {
                 test: /\.scss$/,
+                exclude: /node_modules/,
                 use: ExtractTextPlugin.extract({
                     // 注意 1
                     fallback: {
