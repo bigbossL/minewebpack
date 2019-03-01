@@ -1,0 +1,65 @@
+@import './../css/main.scss';
+.homelist-item{
+    background-color:white;
+    width:100%;
+    height:280px;
+    position: relative;
+    .img{
+        position: absolute;
+        width:90%;
+        height:200px;
+        top:5%;
+        left:5%;
+    }
+    .price{
+        position: absolute;
+        color:#488AFF;
+        font-size:0.4rem;
+        right:5%;
+        bottom:5%;
+    }
+    .breakfast{
+        position: absolute;
+        color:black;
+        font-size:0.4rem;
+        left:5%;
+        bottom:5%;
+    }
+}
+
+.homename{
+    background-color:#488AFF;
+    color:white;
+    font-size:0.2rem;
+}
+
+.romelist-item{
+    width:100%;
+    height:44px;
+    background:white;
+    position: relative;
+    .price-type{
+        @include vertical-center;
+        background-color:#488AFF;
+        color:white;
+        font-size:0.2rem;
+        left:5%;
+    }
+    .count{
+        @include vertical-center;
+        color:black;
+        font-size:0.2rem;
+        left:20%
+    }
+    .price{
+        @include vertical-center;
+        color:#488AFF;
+        font-size:0.3rem;
+        right:25%;
+
+    }
+    .button{
+        @include vertical-center;
+        right:-80%;
+    }
+}

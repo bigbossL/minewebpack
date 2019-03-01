@@ -8,10 +8,18 @@ import {
   WhiteSpace,
   Badge,
   Carousel,
-  Card
+  Card,
+  Calendar,
+  DatePicker,
+  List,
+  Icon,
+  WingBlank,
+  Accordion
 } from "antd-mobile";
-// import "./../text.less";
+import "./../css/home.scss";
 import "antd-mobile/dist/antd-mobile.css";
+
+import { HomeList } from "../components/HomeList";
 interface HomeProps {
   textname: string;
   count?: number;
@@ -41,11 +49,16 @@ const img = {
   imgHeight: 176
 };
 const tabs2 = [{ title: "房型", sub: "1" }, { title: "介绍", sub: "2" }];
+let calendarObj = {
+  show: false
+};
 @connect(
   mapStateToProps,
   mapDispatchToProps
 )
 export default class Home extends React.Component<HomeProps, HomeState> {
+  nowTimeStamp = Date.now();
+  date = new Date(this.nowTimeStamp);
   componentDidMount = () => {
     // simulate img loading
     setTimeout(() => {
@@ -68,64 +81,74 @@ export default class Home extends React.Component<HomeProps, HomeState> {
           afterChange={index => console.log("slide to", index)}
         >
           {img.data.map(val => (
-            <a
-              key={val}
-              href="http://www.alipay.com"
-              style={{
-                display: "inline-block",
-                width: "100%",
-                height: img.imgHeight
+            <img
+              src="http://cdn.sygdsoft.com/banner0.png"
+              alt=""
+              style={{ width: "100%", height: "100%", verticalAlign: "top" }}
+              onLoad={() => {
+                // fire window resize event to change height
+                window.dispatchEvent(new Event("resize"));
               }}
-            >
-              <img
-                src={`https://zos.alipayobjects.com/rmsportal/${val}.png`}
-                alt=""
-                style={{ width: "100%", verticalAlign: "top" }}
-                onLoad={() => {
-                  // fire window resize event to change height
-                  window.dispatchEvent(new Event("resize"));
-                }}
-              />
-            </a>
+            />
           ))}
         </Carousel>
-        <WhiteSpace />
-        <Tabs
-          tabs={tabs2}
-          initialPage={1}
-          // tabBarPosition="bottom"
-          renderTab={tab => <span>{tab.title}</span>}
-        >
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "150px",
-              backgroundColor: "#fff"
-            }}
-          >
-           <Card full>
-      <Card.Header
-        title="This is title"
-        thumb="https://gw.alipayobjects.com/zos/rmsportal/MRhHctKOineMbKAZslML.jpg"
-        extra={<span>this is extra</span>}
-      />
-    </Card>
-          </div>
-          <div
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              height: "150px",
-              backgroundColor: "#fff"
-            }}
-          >
-            Content of second tab
-          </div>
-        </Tabs>
-        <WhiteSpace />
+        <div>
+          <List style={{ backgroundColor: "white" }}>
+            <DatePicker value={this.date} onChange={date => (this.date = date)}>
+              <List.Item arrow="horizontal">入住时间</List.Item>
+            </DatePicker>
+            <DatePicker value={this.date}>
+              <List.Item arrow="horizontal">离店时间</List.Item>
+            </DatePicker>
+          </List>
+          <WhiteSpace />
+          <HomeList
+            homeProps={[
+              {
+                img: "http://cdn.sygdsoft.com/banner0.png",
+                price: 0.01,
+                name: "大床房",
+                roomList: [
+                  {
+                    count: 2,
+                    price: 0.01,
+                    type: "标准间"
+                  },
+                  {
+                    count: 2,
+                    price: 0.01,
+                    type: "标准间"
+                  }
+                ]
+              },
+              {
+                img: "http://cdn.sygdsoft.com/banner0.png",
+                price: 0.01,
+                name: "大床房",
+                roomList: [
+                  {
+                    count: 2,
+                    price: 0.01,
+                    type: "标准间"
+                  },
+                  {
+                    count: 2,
+                    price: 0.01,
+                    type: "标准间"
+                  }
+                ]
+              }
+            ]}
+          />
+          {/* <Accordion defaultActiveKey="0" className="my-accordion">
+          
+          </Accordion> */}
+
+          <WhiteSpace />
+          <List>
+            <List.Item extra="17695532176">预定热线</List.Item>
+          </List>
+        </div>
       </div>
     );
   }
