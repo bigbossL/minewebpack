@@ -1,0 +1,14 @@
+@import './home.scss';
+.stepper{
+    width:100px;
+}
+.hint{
+    .title{
+        color:#e94f4f;
+        font-size:0.3rem;
+    }
+    .msg{
+        font-size:0.2rem;
+        color:#c4c4c4;
+    }
+}
