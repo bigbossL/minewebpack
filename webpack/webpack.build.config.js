@@ -94,7 +94,8 @@ module.exports = {
         }),
         new CleanWebpackPlugin(['../dist']),
         // new WebpackDevServer()
-    ]
-
+    ],
+    //跨域设置
+    // proxy: "http://b4s3yp.natappfree.cc"
 
 }

@@ -1,5 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
+
 import {
   Flex,
   Button,
@@ -23,10 +24,10 @@ interface HomeListObj {
   name: string;
   roomList: [];
 }
-export function HomeList(homeProps) {
-  // console.log('fuck',homeProps.homeProps,homeProps['roomList'])
+export function HomeList(props) {
+
   let homeArr = [];
-  homeProps.homeProps.forEach(e => {
+  props.homeProps.forEach(e => {
     let homeContext = (
       <div className="homelist-item">
         <img src={e.img} className="img" />

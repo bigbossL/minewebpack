@@ -20,14 +20,17 @@ import {
 } from "antd-mobile";
 import "./../css/resever.scss";
 import "antd-mobile/dist/antd-mobile.css";
-import RoomInfo from './../components/RoomInfo' 
+import RoomInfo from "./../components/RoomInfo";
 
-interface ReseverProps {}
+interface ReseverProps {
+  startTime?: Date;
+  endTime?: Date;
+}
 interface ReseverState {
-  roomNum: number;
-  comeTime: string;
-  leaveTime: string;
-  needTimes: number;
+  roomCount: number;
+  name: string;
+  phone: string;
+  context: string;
 }
 const Item = List.Item;
 export default class Resever extends React.Component<
@@ -35,38 +38,64 @@ export default class Resever extends React.Component<
   ReseverState
 > {
   public readonly state = {
-    roomNum: 1,
-    comeTime: "cometime",
-    leaveTime: "leavetime",
-    needTimes: 2
+    roomCount: 1,
+    name: void 0,
+    phone: void 0,
+    context: void 0
   };
+  get money(): number {
+    return 100;
+  }
   public render() {
     return (
       <div>
-        <RoomInfo img='http://cdn.sygdsoft.com/banner0.png' hotelName='辽阳宾馆' name='会议室' price={0.05}/>
-        <WhiteSpace/>
+        <RoomInfo
+          img="http://cdn.sygdsoft.com/banner0.png"
+          hotelName="辽阳宾馆"
+          name="会议室"
+          price={0.05}
+        />
+        <WhiteSpace />
         <List>
-          <List.Item extra={this.state.comeTime}>开始时间</List.Item>
-          <List.Item extra={this.state.leaveTime}>结束时间</List.Item>
-          <InputItem clear placeholder="请输入姓名">
+          <List.Item extra={this.props.startTime}>开始时间</List.Item>
+          <List.Item extra={this.props.endTime}>结束时间</List.Item>
+          <InputItem
+            clear
+            placeholder="请输入姓名"
+            value={this.state.name}
+            onChange={v => {
+              this.setState({ name: v });
+            }}
+          >
             姓名
           </InputItem>
-          <InputItem clear type="phone" placeholder="请输入手机号码">
+          <InputItem
+            clear
+            type="phone"
+            placeholder="请输入手机号码"
+            value={this.state.phone}
+            onChange={v => {
+              this.setState({ phone: v });
+            }}
+          >
             手机号码
           </InputItem>
-          <Item multipleLine extra={this.state.roomNum}>
+          <Item multipleLine extra={this.state.roomCount}>
             房间数量
             <Item.Brief>
               <Stepper
                 className="stepper"
-                value={this.state.roomNum}
+                value={this.state.roomCount}
                 min={1}
-                onChange={this.setRoomCount}
+                onChange={count => {
+                  this.setState({ roomCount: count });
+                }}
               />
             </Item.Brief>
           </Item>
           <TextareaItem
             title="特殊要求"
+            // value={this.state.context}
             // placeholder="click the button below to focus"
             data-seed="logId"
             autoHeight
@@ -74,7 +103,7 @@ export default class Resever extends React.Component<
         </List>
         <WhiteSpace />
         <List>
-          <List.Item extra={"￥0.01"}>合计金额</List.Item>
+          <List.Item extra={this.money}>合计金额</List.Item>
         </List>
         <WhiteSpace />
         <WingBlank>
@@ -92,7 +121,4 @@ export default class Resever extends React.Component<
       </div>
     );
   }
-  setRoomCount = count => {
-    this.setState({ roomNum: count });
-  };
 }

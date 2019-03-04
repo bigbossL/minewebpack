@@ -13,6 +13,7 @@ interface DispatchObj{
 
 const reducer=(state,action:DispatchObj)=>{
     if(storeConfig.action[action.type]){
+        console.log(storeConfig.action[action.type](state,action.data))
         return storeConfig.action[action.type](state,action.data)
     }
        return {...storeConfig.state}  
