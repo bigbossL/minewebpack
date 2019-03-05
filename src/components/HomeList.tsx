@@ -30,30 +30,39 @@ export function HomeList(props) {
   props.homeProps.forEach(e => {
     let homeContext = (
       <div className="homelist-item">
-        <img src={e.img} className="img" />
-        <p className="price">￥{e.price} </p>
+        <img src={e.cloudPic} className="img" />
+        <p className="price">￥{e.roomPrice} </p>
         <p className="breakfast">早餐</p>
       </div>
     );
     let items = [];
-    e.roomList.forEach(el => {
-      items.push(
-        <div className="romelist-item">
-          <div className="price-type">{el.type}</div>
-          <div className="count">剩余:{el.count}</div>
-          <div className="price">￥{el.price}</div>
-          <Button type="primary" inline size="small" className="button">
-            预定
-          </Button>
-        </div>
-      );
-    });
+    // e.roomList.forEach(el => {
+    //   items.push(
+    //     <div className="romelist-item">
+    //       <div className="price-type">{el.type}</div>
+    //       <div className="count">剩余:{el.count}</div>
+    //       <div className="price">￥{el.price}</div>
+    //       <Button type="primary" inline size="small" className="button">
+    //         预定
+    //       </Button>
+    //     </div>
+    //   );
+    // });
     homeArr.push(
       <div>
         {homeContext}
         <Accordion>
-          <Accordion.Panel header={e.name}>
-            <List>{items}</List>
+          <Accordion.Panel header={e.roomCategory}>
+            <List>
+            <div className="romelist-item">
+          <div className="price-type">{e.protocol}</div>
+          <div className="count">剩余:{e.remain}</div>
+          <div className="price">￥{props.roomPrice}</div>
+          <Button type="primary" inline size="small" className="button">
+            预定
+          </Button>
+        </div>
+            </List>
           </Accordion.Panel>
         </Accordion>
         <WhiteSpace/>

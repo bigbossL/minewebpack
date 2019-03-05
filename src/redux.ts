@@ -1,6 +1,10 @@
 import {createStore,applyMiddleware} from 'redux'
 import {storeConfig} from './config/store'
 import createSagaMiddleware from 'redux-saga';
+
+// import { composeWithDevTools } from 'redux-devtools-extension'
+// import {createLogger} from 'redux-logger'
+
 // import rootSaga from './config/saga';
 import {all, fork} from "redux-saga/effects";
 const sagaMiddleware=createSagaMiddleware();
@@ -11,12 +15,13 @@ interface DispatchObj{
     data:any
 }
 
-const reducer=(state,action:DispatchObj)=>{
+const reducer=(state,action:DispatchObj)=>{ 
+    console.log('reducer:',state)
     if(storeConfig.action[action.type]){
-        console.log(storeConfig.action[action.type](state,action.data))
+       
         return storeConfig.action[action.type](state,action.data)
     }
-       return {...storeConfig.state}  
+       return state==void 0?{...storeConfig.state}:{...state}  
 }
 
 function* rootSaga() {
@@ -28,7 +33,7 @@ function* rootSaga() {
     yield all(forkList)
 }
   
-
+// const loggerMiddleware = createLogger({collapsed: true});
 export default function getStore(){
     const store=createStore(reducer, applyMiddleware(sagaMiddleware))
     sagaMiddleware.run(rootSaga)
