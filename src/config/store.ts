@@ -4,8 +4,9 @@ import { take, all, fork, put, call } from "redux-saga/effects";
 import { cloudBookProtocolGet, getRoomCategoryRemain,hotelMessage } from "./api";
 export const storeConfig = {
   state: {
-    data: [],
-    hasLoadCount: false
+    data: void 0,
+    hasLoadCount: false,
+    hotelmsg:void 0
   },
   action: {
     updata: (state, data) => {
@@ -28,8 +29,7 @@ export const storeConfig = {
       return { ...state, data: newdata,hasLoadCount:true};
     },
     updateHotleMsg:(state,data)=>{
-
-        
+      return{...state, hotelmsg: data};
     }
   },
   async: {
@@ -62,7 +62,7 @@ export const storeConfig = {
             try {
               const res = yield hotelMessage();
               console.log(res)
-            //   yield put({ type: "updataTime", data: res.data });
+              yield put({ type: "updateHotleMsg", data: res.data });
             } catch (e) {
               console.log(e.error);
             }
