@@ -1,5 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
+import {connect} from 'react-redux'
 
 import {
   Flex,
@@ -18,15 +19,28 @@ import {
 } from "antd-mobile";
 import "./../css/homelist.scss";
 import "antd-mobile/dist/antd-mobile.css";
-interface HomeListObj {
-  img: string;
-  price: number;
-  name: string;
-  roomList: [];
+import { Link } from "react-router-dom";
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+    hasLoadCount: state.hasLoadCount,
+    hotelmsg:state.hotelmsg
+  };
 }
-export function HomeList(props) {
+//需要触发什么行为
+function mapDispatchToProps(dispatch) {
+  return {
+    chooseRoom: (id) => dispatch({ type: "chooseRoom",data:id }),
+  };
+}
+interface HomeState {
+  startTime: Date;
+  endTime: Date;
+}
 
+ function HomeList(props) {
   let homeArr = [];
+  console.log(props)
   props.homeProps.forEach(e => {
     let homeContext = (
       <div className="homelist-item">
@@ -54,18 +68,28 @@ export function HomeList(props) {
         <Accordion>
           <Accordion.Panel header={e.roomCategory}>
             <List>
-            <div className="romelist-item">
-          <div className="price-type">{e.protocol}</div>
-          <div className="count">剩余:{e.remain}</div>
-          <div className="price">￥{props.roomPrice}</div>
-          <Button type="primary" inline size="small" className="button">
-            预定
-          </Button>
-        </div>
+              <div className="romelist-item">
+                <div className="price-type">{e.protocol}</div>
+                <div className="count">剩余:{e.remain}</div>
+                <div className="price">￥{props.roomPrice}</div>
+               
+                  <Button type="primary" inline size="small" className="button" onClick={event=>{
+                    console.log(window.location.hash) 
+                    props.chooseRoom(1)
+                    console.log('fuck!!!!')
+                    window.location.hash='#/resever'
+                     
+                  }
+                   
+                }>
+                    预定
+                  </Button>
+               
+              </div>
             </List>
           </Accordion.Panel>
         </Accordion>
-        <WhiteSpace/>
+        <WhiteSpace />
       </div>
     );
   });
@@ -76,9 +100,7 @@ export function HomeList(props) {
   //   <div className='price'>￥0.01</div>
   //   <Button type='primary' inline size='small' className='button'>预定</Button>
   // </div>)
-  return (
-    <div>
-      {homeArr}
-    </div>
-  );
+  return <div>{homeArr}</div>;
 }
+
+export default connect(mapStateToProps, mapDispatchToProps)(HomeList);

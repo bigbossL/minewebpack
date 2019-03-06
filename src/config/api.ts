@@ -2,7 +2,7 @@ import axios from "axios";
 import qs from "qs";
 import { takeEvery, put } from "redux-saga/effects";
 const apiConfig = {
-  host: "http://iz5jui.natappfree.cc/"
+  host:"http://unz3xd.natappfree.cc/"
 };
 const CLOUD_BOOK_PROTOCOL_GET = "cloudBookProtocolGet";
 const GET_ROOM_CATRGORY_REMAIN = "getRoomCategoryRemain";

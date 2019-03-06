@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { HashRouter, Route, BrowserRouter, Link,Switch} from "react-router-dom";
+import { HashRouter, Route,Switch } from "react-router-dom";
 import { router } from "./../config/router";
 
 export function MineRouter() {

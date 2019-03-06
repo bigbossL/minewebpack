@@ -20,7 +20,7 @@ import {
 import "./../css/home.scss";
 import "antd-mobile/dist/antd-mobile.css";
 
-import { HomeList } from "../components/HomeList";
+import HomeList from "../components/HomeList";
 interface HomeProps {
   textname: string;
   data?: any;
@@ -28,7 +28,13 @@ interface HomeProps {
   loadRoomCount?: any;
   no?: number;
   hasLoadCount?: boolean;
-  loadHotelMsg?:Function
+  loadHotelMsg?: Function;
+  hotelmsg?: Array<string>;
+  startTime?: Date;
+  endTime?: Date;
+  setStartTime?: Function;
+  setEndTime?: Function;
+  init?:Function
 }
 interface HomeState {
   startTime: Date;
@@ -37,7 +43,10 @@ interface HomeState {
 function mapStateToProps(state) {
   return {
     data: state.data,
-    hasLoadCount: state.hasLoadCount
+    hasLoadCount: state.hasLoadCount,
+    hotelmsg: state.hotelmsg,
+    startTime: state.startTime,
+    endTime: state.endTime
   };
 }
 //需要触发什么行为
@@ -50,14 +59,12 @@ function mapDispatchToProps(dispatch) {
         type: "getRoomCountList",
         data: { beginTime: beginTime, endTime: endTime }
       }),
-    loadHotelMsg:()=>dispatch({type:"getHotelMsg"})
+    loadHotelMsg: () => dispatch({ type: "getHotelMsg" }),
+    setStartTime: time => dispatch({ type: "setStartTime", data: time }),
+    setEndTime: time => dispatch({ type: "setEndTime", data: time }),
+    init:()=>dispatch({type:"init",data:void 0})
   };
 }
-
-const img = {
-  data: ["1", "2", "3"],
-  imgHeight: 176
-};
 let calendarObj = {
   show: false
 };
@@ -66,16 +73,9 @@ let calendarObj = {
   mapDispatchToProps
 )
 export default class Home extends React.Component<HomeProps, HomeState> {
-  componentDidMount = () => {
-    // simulate img loading
-    setTimeout(() => {
-      img.data = [
-        "AiyWuByWklrrUDlFignR",
-        "TekJlZRVCjLFexlOCuWn",
-        "IJOtIlfsYdTyaDTRVrLI"
-      ];
-    }, 100);
-  };
+  componentDidMount() {
+    console.log("home componentDidMount");
+  }
   get nowDate(): Date {
     return new Date(Date.now());
   }
@@ -85,29 +85,21 @@ export default class Home extends React.Component<HomeProps, HomeState> {
   };
   constructor(props) {
     super(props);
+
+    console.log("home constructor");
+    this.props.init();
     this.props.loadData();
     this.props.loadHotelMsg();
   }
   public render() {
     return (
       <div>
-        <Carousel
-          autoplay={false}
-          infinite
-          beforeChange={(from, to) =>
-            console.log(`slide from ${from} to ${to}`)
-          }
-          afterChange={index => console.log("slide to", index)}
-        >
-          {img.data.map(val => (
+        <Carousel autoplay={false} infinite>
+          {this.props.hotelmsg.map(val => (
             <img
-              src="http://cdn.sygdsoft.com/banner0.png"
+              src={val}
               alt=""
-              style={{ width: "100%", height: "100%", verticalAlign: "top" }}
-              onLoad={() => {
-                // fire window resize event to change height
-                window.dispatchEvent(new Event("resize"));
-              }}
+              style={{ width: "100%", height: "300px", verticalAlign: "top" }}
             />
           ))}
         </Carousel>
@@ -117,9 +109,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
               value={this.state.startTime}
               onChange={date => this.setDate(0, date)}
             >
-              <List.Item arrow="horizontal">
-                入住时间{this.props.data.length}
-              </List.Item>
+              <List.Item arrow="horizontal">入住时间</List.Item>
             </DatePicker>
             <DatePicker
               value={this.state.endTime}
@@ -146,16 +136,19 @@ export default class Home extends React.Component<HomeProps, HomeState> {
   private setDate = (type: number, date: Date): void => {
     switch (type) {
       case 0:
+        this.props.setStartTime(date);
         this.setState({ startTime: date }, () => {
-          if (this.state.startTime != void 0 && this.state.endTime != void 0) {
-            this.props.loadRoomCount(this.state.startTime, this.state.endTime);
+          if (this.props.startTime != void 0 && this.props.endTime != void 0) {
+            this.props.loadRoomCount(this.props.startTime, this.props.endTime);
           }
         });
+
         break;
       case 1:
+        this.props.setEndTime(date);
         this.setState({ endTime: date }, () => {
-          if (this.state.startTime != void 0 && this.state.endTime != void 0) {
-            this.props.loadRoomCount(this.state.startTime, this.state.endTime);
+          if (this.props.startTime != void 0 && this.props.endTime != void 0) {
+            this.props.loadRoomCount(this.props.startTime, this.props.endTime);
           }
         });
         break;
