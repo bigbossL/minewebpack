@@ -75,7 +75,7 @@ interface HomeState {
                
                   <Button type="primary" inline size="small" className="button" onClick={event=>{
                     console.log(window.location.hash) 
-                    props.chooseRoom(1)
+                    props.chooseRoom(e.id)
                     console.log('fuck!!!!')
                     window.location.hash='#/resever'
                      

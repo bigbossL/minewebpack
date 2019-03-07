@@ -1,5 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
+import {submitResever} from './../config/api'
 import {
   Flex,
   Button,
@@ -16,7 +17,8 @@ import {
   Accordion,
   InputItem,
   TextareaItem,
-  Stepper
+  Stepper,
+  Toast
 } from "antd-mobile";
 import "./../css/resever.scss";
 import "antd-mobile/dist/antd-mobile.css";
@@ -29,13 +31,16 @@ interface ReseverProps {
   endTime?: Date;
   data?: Array<any>;
   chooseRoomId?: number;
+  wxId?:string
+  nickName?:string
+  headUrl?:string
+  guestSource?:string
 }
 interface ReseverState {
   roomCount: number;
   name: string;
   phone: string;
   context: string;
-  itemData:any
 }
 const Item = List.Item;
 function mapStateToProps(state) {
@@ -43,7 +48,12 @@ function mapStateToProps(state) {
     data: state.data,
     chooseRoomId: state.chooseRoomId,
     startTime: state.startTime,
-    endTime: state.endTime
+    endTime: state.endTime,
+    wxId:state.wxId,
+    nickName:state.nickName,
+    headUrl:state.headUrl,
+    guestSource:state.guestSource,
+    
   };
 }
 //需要触发什么行为
@@ -62,67 +72,34 @@ export default class Resever extends React.Component<
     roomCount: 1,
     name: void 0,
     phone: void 0,
-    context: void 0,
-    itemData:{
-      // cloudPic: "http://cdn.sygdsoft.com/banner0.png",
-      //   guestSource: "微信",
-      //   id: 1,
-      //   page: 1,
-      //   protocol: "标准价",
-      //   remain: 5,
-      //   roomCategory: "三人间",
-      //   roomPrice: 0.01,
-      //   rows: 0
-    }
+    context: '',
   };
   constructor(props){
     super(props)
-    console.log('resever',props,props.data)
-    // props.data.forEach(e => {
-    //   console.log(e.id == props.chooseRoomId,e.id ,props.chooseRoomId)
-    //   if (e.id == props.chooseRoomId) {
-    //     console.log(e)
-    //    this.setState({itemData:{...e}})
-    //   }
-    // });
-    for(let i=0;i<props.data.length;i++){
-
-      if (props.data[i].id == props.chooseRoomId) {
-        console.log(props.data[i])
-      }
-    }
-    console.log(this.state.itemData)
+    
   }
   get money(): number {
-    return this.state.itemData['roomPrice'] * this.state.roomCount;
+    return this.props.data[this.props.chooseRoomId]['roomPrice'] * this.state.roomCount;
   }
-  // get itemData() {
-  //   console.log("resever props", this.props);
-  //   this.props.data.forEach(e => {
-  //     if (e.id == this.props.chooseRoomId) {
-  //       console.log('匹配了')
-  //       return {
-  //       cloudPic: "http://cdn.sygdsoft.com/banner0.png",
-  //       guestSource: "微信",
-  //       id: 1,
-  //       page: 1,
-  //       protocol: "标准价",
-  //       remain: 5,
-  //       roomCategory: "三人间",
-  //       roomPrice: 0.01,
-  //       rows: 0};
-  //     }
-  //   });
-  //   return null;
-  // }
+  get itemdata():any{
+    let arr=void 0;
+    this.props.data.forEach(e=>{
+      if(e.id==this.props.chooseRoomId){
+        arr={...e}
+      }
+    })
+    return arr
+  }
+  
+
   public render() {
     return (
       <div>
         <RoomInfo
-          img={this.state.itemData['cloudPic']}
-          hotelName={this.state.itemData['roomCategory']}
-          name={this.state.itemData['roomCategory']}
-          price={this.state.itemData['roomPrice']}
+          img={this.itemdata['cloudPic']}
+          hotelName={this.itemdata['roomCategory']}
+          name={this.itemdata['roomCategory']}
+          price={this.itemdata['roomPrice']}
         />
         <WhiteSpace />
         <List>
@@ -156,7 +133,7 @@ export default class Resever extends React.Component<
                 className="stepper"
                 value={this.state.roomCount}
                 min={1}
-                max={this.state.itemData['remain']}
+                max={this.props.data[this.props.chooseRoomId]['remain']}
                 onChange={count => {
                   this.setState({ roomCount: count });
                 }}
@@ -165,7 +142,13 @@ export default class Resever extends React.Component<
           </Item>
           <TextareaItem
             title="特殊要求"
-            // value={this.state.context}
+            value={this.state.context}
+            onChange={e=>{
+              this.setState({
+                context:e
+              })
+              console.log(this.state)
+            }}
             // placeholder="click the button below to focus"
             data-seed="logId"
             autoHeight
@@ -185,10 +168,42 @@ export default class Resever extends React.Component<
         </WingBlank>
         <WhiteSpace />
         <WingBlank>
-          <Button type="primary">确认付款</Button>
+          <Button type="primary" onClick={this.payment}>确认付款</Button>
         </WingBlank>
         <WhiteSpace />
       </div>
     );
+  }
+  private payment= async (event)=>{
+    
+    try{
+      if(this.state.name==void 0||this.state.name==''){
+        throw new Error('名字不能为空')
+      }
+      if(this.state.phone==void 0||this.state.phone==''){
+        throw new Error('手机号不能为空')
+      }
+      const res=await submitResever({
+        wxId:this.props.wxId,
+        nickName:this.props.nickName,
+        headUrl:this.props.guestSource,
+        guestSource:this.props.guestSource,
+        doTime:new Date(),
+        reachTime:this.props.startTime,
+        leaveTime:this.props.endTime,
+        price:this.money,
+        protocol:this.itemdata['protocol'],
+        roomCategory:this.itemdata['roomCategory'],
+        remain:this.state.context,
+        num:this.state.roomCount,
+        phone:this.state.phone,
+        name:this.state.name
+      })
+      console.log(res)
+      　window.location.href=`http://wechatPayCreate?orderId=${res.data}&returnUrl=http://localhost:9090/#/list`; 
+    }catch(e){
+      Toast.fail(e.message, 1);
+      console.log(e.message)
+    }
   }
 }

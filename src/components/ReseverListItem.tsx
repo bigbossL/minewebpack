@@ -20,13 +20,15 @@ import {
 } from "antd-mobile";
 import "antd-mobile/dist/antd-mobile.css";
 interface Props {
-  hotelName: string;
   name: string;
   count:number;
   startTime: string;
   endTime: string;
   isEnd: boolean;
   price:number;
+  doTime:string;
+  userName:string;
+  phone:string;
 }
 export default function ReserverListItem(props: Props) {
   let footer = void 0;
@@ -57,11 +59,14 @@ export default function ReserverListItem(props: Props) {
         <Card.Header title="订单详情" extra={header} />
         <Card.Body>
           <List>
-            <List.Item extra={props.hotelName}>宾馆名称</List.Item>
+            {/* <List.Item extra={props.hotelName}>宾馆名称</List.Item> */}
             <List.Item extra={props.name}>房间类型</List.Item>
             <List.Item extra={props.count}>房间数量</List.Item>
             <List.Item extra={props.startTime}>开始时间</List.Item>
             <List.Item extra={props.endTime}>结束时间</List.Item>
+            <List.Item extra={props.userName}>预留联系人</List.Item>
+            <List.Item extra={props.phone}>预留电话</List.Item>
+            <List.Item extra={props.doTime}>下单时间</List.Item>
           </List>
         </Card.Body>
         {footer}

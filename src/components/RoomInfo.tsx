@@ -8,7 +8,6 @@ interface Props{
     price:number,
 }
 export default function RoomInfo(props:Props){
-    console.log(props)
     return(
         <div className="roomitem">
         <img src={props.img} className="img" />
