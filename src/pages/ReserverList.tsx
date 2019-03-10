@@ -29,19 +29,21 @@ import {connect} from "react-redux"
 
 interface ReseverListProps {
   roomData?:Array<any>,
-  getReseverList:Function
+  getReseverList?:Function,
+  upDateParams?:Function,
+  wxId?:string
 }
 interface ReseverListState {
   roomNum: number;
   comeTime: string;
   leaveTime: string;
   needTimes: number;
-  wxId: string;
 }
 const Item = List.Item;
 function mapStateToProps(state) {
   return {
-    roomData:state.reseverList
+    roomData:state.reseverList,
+    wxId:state.wxId
   };
 }
 //需要触发什么行为
@@ -49,7 +51,8 @@ function mapDispatchToProps(dispatch) {
   return {
     getReseverList:(data)=>{
       dispatch({type:'getReseverList',data:data})
-    }
+    },
+    upDateParams: data => dispatch({ type: "upDateParams", data: data })
   };
 }
 @connect(mapStateToProps,mapDispatchToProps)
@@ -59,16 +62,17 @@ export default class ReseverList extends React.Component<
 > {
   componentDidMount() {
     console.log("wxId:", getParam("wxId"));
-    this.setState({ wxId: getParam("wxId") }, () => {
-      this.getList();
-    });
+    this.props.getReseverList({ wxId: this.props.wxId })
+  }
+  constructor(props){
+    super(props)
+    this.props.upDateParams(JSON.parse(this.props["match"].params.json));
   }
   public readonly state = {
     roomNum: 1,
     comeTime: "cometime",
     leaveTime: "leavetime",
-    needTimes: 2,
-    wxId: void 0
+    needTimes: 2
   };
   public render() {
     let arr = [];
@@ -91,17 +95,6 @@ export default class ReseverList extends React.Component<
   }
   setRoomCount = count => {
     this.setState({ roomNum: count });
-  };
-  private getList =  () => {
-    this.props.getReseverList({ wxId: this.state.wxId })
-    // try {
-    //   console.log("getList");
-    //   const res = await cloudBookGet({ wxId: this.state.wxId });
-    //   this.setState({
-    //     roomData: res.data
-    //   });
-    // } catch (e) {
-    //   Toast.fail(e.message, 1);
-    // }
-  };
+  }
+
 }

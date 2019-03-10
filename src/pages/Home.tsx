@@ -2,6 +2,7 @@ import * as React from "react";
 import { render } from "react-dom";
 import { connect } from "react-redux";
 import { cloudBookProtocolGet } from "./../config/api";
+import { getHashUrl } from "./../utils";
 import {
   Flex,
   Button,
@@ -34,7 +35,9 @@ interface HomeProps {
   endTime?: Date;
   setStartTime?: Function;
   setEndTime?: Function;
-  init?:Function
+  init?: Function;
+  upDateParams?: Function;
+  ip?: string;
 }
 interface HomeState {
   startTime: Date;
@@ -46,7 +49,8 @@ function mapStateToProps(state) {
     hasLoadCount: state.hasLoadCount,
     hotelmsg: state.hotelmsg,
     startTime: state.startTime,
-    endTime: state.endTime
+    endTime: state.endTime,
+    ip: state.ip
   };
 }
 //需要触发什么行为
@@ -62,7 +66,8 @@ function mapDispatchToProps(dispatch) {
     loadHotelMsg: () => dispatch({ type: "getHotelMsg" }),
     setStartTime: time => dispatch({ type: "setStartTime", data: time }),
     setEndTime: time => dispatch({ type: "setEndTime", data: time }),
-    init:()=>dispatch({type:"init",data:void 0})
+    init: () => dispatch({ type: "init", data: void 0 }),
+    upDateParams: data => dispatch({ type: "upDateParams", data: data })
   };
 }
 let calendarObj = {
@@ -74,10 +79,11 @@ let calendarObj = {
 )
 export default class Home extends React.Component<HomeProps, HomeState> {
   componentDidMount() {
-    console.log("home componentDidMount");
+    this.props.loadData();
+    this.props.loadHotelMsg();
   }
   get nowDate(): Date {
-    return new Date(Date.now());
+    return new Date();
   }
   public readonly state = {
     startTime: void 0,
@@ -85,11 +91,9 @@ export default class Home extends React.Component<HomeProps, HomeState> {
   };
   constructor(props) {
     super(props);
-
-    console.log("home constructor");
     this.props.init();
-    this.props.loadData();
-    this.props.loadHotelMsg();
+    console.log("home constructor");
+    this.props.upDateParams(JSON.parse(this.props["match"].params.json));
   }
   public render() {
     return (
@@ -107,12 +111,17 @@ export default class Home extends React.Component<HomeProps, HomeState> {
           <List>
             <DatePicker
               value={this.state.startTime}
+              mode='date'
+              minDate={this.nowDate}
+              maxDate={this.props.endTime?this.props.endTime:new Date(2030, 1, 1, 23, 59, 59)}
               onChange={date => this.setDate(0, date)}
             >
               <List.Item arrow="horizontal">入住时间</List.Item>
             </DatePicker>
             <DatePicker
               value={this.state.endTime}
+              mode='date'
+              minDate={this.props.startTime?this.props.startTime:this.nowDate}
               onChange={date => this.setDate(1, date)}
             >
               <List.Item arrow="horizontal">离店时间</List.Item>

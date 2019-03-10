@@ -6,7 +6,8 @@ import { router } from "./../config/router";
 export function MineRouter() {
   let routers = [];
   router.forEach(e => {
-    routers.push(<Route path={e.path} exact component={e.component} />);
+    // exact
+    routers.push(<Route path={e.path}  component={e.component} />);
   });
   return <HashRouter><Switch>{routers}</Switch></HashRouter>;
 }

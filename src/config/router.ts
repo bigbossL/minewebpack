@@ -3,7 +3,7 @@ import Home from './../pages/Home'
 import ReseverList from '../pages/ReserverList';
 export const router=[
     {
-        path:'/',
+        path:'/home/:json',
         component:Home
     },
     {

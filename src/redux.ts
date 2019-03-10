@@ -34,10 +34,10 @@ function* rootSaga() {
 }
   
 // const loggerMiddleware = createLogger({collapsed: true});
-export default function getStore(){
+function getStore(){
     const store=createStore(reducer, applyMiddleware(sagaMiddleware))
     sagaMiddleware.run(rootSaga)
     return store 
 }
-// export const store=createStore(reducer, applyMiddleware(sagaMiddleware))
+export const store=getStore()
 

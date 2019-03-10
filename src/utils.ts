@@ -25,3 +25,8 @@ export function getNowFormatDate() {
   let day = date.getDate()<10?'0'+date.getDate():''+date.getDate(); //获取当前日(1-31)
   return `${date.getFullYear()}-${month}-${day} ${date.getHours()}:${date.getMinutes()}:${date.getSeconds()}`
 }
+
+export function getHashUrl(){
+  let query = window.location;
+  console.log(query)
+}
