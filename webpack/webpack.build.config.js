@@ -3,6 +3,7 @@ const ExtractTextPlugin = require("extract-text-webpack-plugin"); //css分离工
 const ProgressBarPlugin = require("progress-bar-webpack-plugin"); //打包显示进度条
 const HtmlWebpackPlugin = require('html-webpack-plugin'); //动态生成html
 const CleanWebpackPlugin = require('clean-webpack-plugin'); //每次打包删除之前的文件
+const Uglifyjs=require('uglifyjs-webpack-plugin')//压缩工具
 // const WebpackDevServer=require('webpack-dev-server');//这个是开发用的服务器
 module.exports = {
     entry: path.resolve(__dirname, '../src/index.tsx'),
@@ -71,7 +72,9 @@ module.exports = {
 
         ]
     },
-    devtool: 'source-map',
+    // devtool: 'source-map',
+    //不生成map文件
+    // productionSourceMap:false,
     //     //配置开发服务器
     //     devServer: {
     //     // contentBase: [path.join(__dirname, 'public'), path.join(__dirname, 'assets')],
@@ -93,6 +96,7 @@ module.exports = {
             inject: 'body',
         }),
         new CleanWebpackPlugin(['../dist']),
+        // new Uglifyjs()
         // new WebpackDevServer()
     ],
     //跨域设置
