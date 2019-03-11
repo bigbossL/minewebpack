@@ -25,6 +25,7 @@ import "antd-mobile/dist/antd-mobile.css";
 import RoomInfo from "./../components/RoomInfo";
 import { connect } from "react-redux";
 import {timechange,getStayDays} from './../utils'
+import {store} from "../redux";
 
 interface ReseverProps {
   startTime?: Date;
@@ -200,7 +201,7 @@ export default class Resever extends React.Component<
         name:this.state.name
       })
       console.log(res)
-      　window.location.href=`http://wechatPayCreate?orderId=${res.data}&returnUrl=http://localhost:9090/#/list`; 
+      　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.money}&wxId=${this.props.wxId}&domain${store.getState().ip}`;
     }catch(e){
       Toast.fail(e.message, 1);
       console.log(e.message)
