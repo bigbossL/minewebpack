@@ -24,7 +24,7 @@ import "./../css/resever.scss";
 import "antd-mobile/dist/antd-mobile.css";
 import RoomInfo from "./../components/RoomInfo";
 import { connect } from "react-redux";
-import {timechange} from './../utils'
+import {timechange,getStayDays} from './../utils'
 
 interface ReseverProps {
   startTime?: Date;
@@ -79,7 +79,7 @@ export default class Resever extends React.Component<
     
   }
   get money(): number {
-    return this.props.data[this.props.chooseRoomId]['roomPrice'] * this.state.roomCount;
+    return this.props.data[this.props.chooseRoomId]['roomPrice'] * this.state.roomCount*getStayDays(this.props.startTime,this.props.endTime);
   }
   get itemdata():any{
     let arr=void 0;

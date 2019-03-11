@@ -22,16 +22,23 @@ export const storeConfig = {
     headUrl: void 0,
     guestSource: "微信",
     ip: void 0,
-    reseverList: []
+    reseverList: [],
+    hotelMsg:{
+      name:void 0,
+      phone:void 0,
+      position:void 0,
+      attention:void 0,
+      abstract:void 0,
+    }
   },
   action: {
     init: (state, data) => {
       return { ...storeConfig.state };
     },
     updata: (state, data) => {
-      let newdata = { ...state };
-      newdata.data = data;
-      return newdata;
+      // let newdata = { ...state };
+      // newdata.data = data;
+      return {...state,data:data};
     },
     updataTime: (state, data) => {
       let newdata = [...state.data];
@@ -50,13 +57,37 @@ export const storeConfig = {
     updateHotleMsg: (state, data) => {
       console.log("updateHotleMsg");
       let imgArr = [];
+      let hotelMsg={
+        name:void 0,
+        phone:void 0,
+        position:void 0,
+        attention:void 0,
+        abstract:void 0,
+      }
       data.forEach(e => {
+        console.log(e.name)
+        if(e.name=='酒店名称'){
+          hotelMsg.name=e.value
+        }
+        if(e.name=='联系电话'){
+          hotelMsg.phone=e.value
+        }
+        if(e.name=='位置'){
+          hotelMsg.position=e.value
+        }
+        if(e.name=='简介'){
+          hotelMsg.abstract=e.value
+        }
+        if(e.name=='注意事项'){
+          hotelMsg.attention=e.value
+        }
         if (e.name == "酒店图片") {
           imgArr = e.value.split(",");
         }
       });
-      console.log(imgArr);
-      return { ...state, hotelmsg: imgArr };
+  
+      console.log('updatte',{ ...state, hotelmsg: imgArr ,hotelMsg:hotelMsg});
+      return { ...state, hotelmsg: imgArr ,hotelMsg:hotelMsg};
     },
     chooseRoom: (state, data) => {
       console.log("执行了");
@@ -111,7 +142,6 @@ export const storeConfig = {
         const action = yield take("getHotelMsg");
         try {
           const res = yield hotelMessage();
-          console.log("updateHotleMsg CALL", res);
           yield put({ type: "updateHotleMsg", data: res.data });
         } catch (e) {
           console.log(e.error);

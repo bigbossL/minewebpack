@@ -46,7 +46,7 @@ interface HomeState {
       <div className="homelist-item">
         <img src={e.cloudPic} className="img" />
         <p className="price">￥{e.roomPrice} </p>
-        <p className="breakfast">早餐</p>
+        {/* <p className="breakfast">早餐</p> */}
       </div>
     );
     let items = [];
@@ -71,7 +71,7 @@ interface HomeState {
               <div className="romelist-item">
                 <div className="price-type">{e.protocol}</div>
                 <div className="count">剩余:{e.remain}</div>
-                <div className="price">￥{props.roomPrice}</div>
+                {/* <div className="price">￥{props.roomPrice}</div> */}
                
                   <Button type="primary" inline size="small" className="button" onClick={event=>{
                     console.log(window.location.hash) 

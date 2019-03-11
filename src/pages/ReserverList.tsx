@@ -34,10 +34,7 @@ interface ReseverListProps {
   wxId?:string
 }
 interface ReseverListState {
-  roomNum: number;
-  comeTime: string;
-  leaveTime: string;
-  needTimes: number;
+ 
 }
 const Item = List.Item;
 function mapStateToProps(state) {
@@ -66,14 +63,9 @@ export default class ReseverList extends React.Component<
   }
   constructor(props){
     super(props)
-    this.props.upDateParams(JSON.parse(this.props["match"].params.json));
+    console.log(this.props);
+    this.props.upDateParams(JSON.parse(decodeURIComponent(this.props["match"].params.json)));
   }
-  public readonly state = {
-    roomNum: 1,
-    comeTime: "cometime",
-    leaveTime: "leavetime",
-    needTimes: 2
-  };
   public render() {
     let arr = [];
     this.props.roomData.map(e => {
@@ -93,8 +85,4 @@ export default class ReseverList extends React.Component<
     });
     return <div>{arr}</div>;
   }
-  setRoomCount = count => {
-    this.setState({ roomNum: count });
-  }
-
 }

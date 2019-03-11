@@ -30,3 +30,12 @@ export function getHashUrl(){
   let query = window.location;
   console.log(query)
 }
+
+export function getStayDays(startTime:Date,endTime:Date){
+        let sDate1 = startTime.getTime()
+        let sDate2 = endTime.getTime()
+        let dateSpan = sDate2 - sDate1
+        dateSpan = Math.abs(dateSpan)
+        return Math.floor(dateSpan / (24 * 3600 * 1000))
+
+}

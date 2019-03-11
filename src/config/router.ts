@@ -11,7 +11,7 @@ export const router=[
         component:Resever
     },
     {
-        path:'/list',
+        path:'/list/:json',
         component:ReseverList
     }
    

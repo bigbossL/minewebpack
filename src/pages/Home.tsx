@@ -38,6 +38,7 @@ interface HomeProps {
   init?: Function;
   upDateParams?: Function;
   ip?: string;
+  hotelMsg?: any;
 }
 interface HomeState {
   startTime: Date;
@@ -50,7 +51,8 @@ function mapStateToProps(state) {
     hotelmsg: state.hotelmsg,
     startTime: state.startTime,
     endTime: state.endTime,
-    ip: state.ip
+    ip: state.ip,
+    hotelMsg: state.hotelMsg
   };
 }
 //需要触发什么行为
@@ -92,36 +94,56 @@ export default class Home extends React.Component<HomeProps, HomeState> {
   constructor(props) {
     super(props);
     this.props.init();
-    console.log("home constructor");
-    this.props.upDateParams(JSON.parse(this.props["match"].params.json));
+    // console.log("home constructor",decodeURIComponent(this.props["match"].params.json));
+    this.props.upDateParams(
+      JSON.parse(decodeURIComponent(this.props["match"].params.json))
+    );
   }
   public render() {
     return (
       <div>
-        <Carousel autoplay={false} infinite>
+        <Carousel autoplay={false} infinite  style={{ width: "100%", height: "300px", verticalAlign: "top" }}>
           {this.props.hotelmsg.map(val => (
             <img
               src={val}
-              alt=""
               style={{ width: "100%", height: "300px", verticalAlign: "top" }}
             />
           ))}
         </Carousel>
+        <Card full>
+          <Card.Header
+            title={this.props.hotelMsg['name']}
+            // extra={<span>this is extra</span>}
+          />
+          <Card.Body>
+            <div>{this.props.hotelMsg['abstract']}</div>
+          </Card.Body>
+          <Card.Footer
+            content={this.props.hotelMsg['position']}
+            // extra={<div>extra footer content</div>}
+          />
+        </Card>
         <div>
           <List>
             <DatePicker
               value={this.state.startTime}
-              mode='date'
+              mode="date"
               minDate={this.nowDate}
-              maxDate={this.props.endTime?this.props.endTime:new Date(2030, 1, 1, 23, 59, 59)}
+              maxDate={
+                this.props.endTime
+                  ? this.props.endTime
+                  : new Date(2030, 1, 1, 23, 59, 59)
+              }
               onChange={date => this.setDate(0, date)}
             >
               <List.Item arrow="horizontal">入住时间</List.Item>
             </DatePicker>
             <DatePicker
               value={this.state.endTime}
-              mode='date'
-              minDate={this.props.startTime?this.props.startTime:this.nowDate}
+              mode="date"
+              minDate={
+                this.props.startTime ? this.props.startTime : this.nowDate
+              }
               onChange={date => this.setDate(1, date)}
             >
               <List.Item arrow="horizontal">离店时间</List.Item>
@@ -135,7 +157,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
           )}
           <WhiteSpace />
           <List>
-            <List.Item extra="17695532176">预定热线</List.Item>
+            <List.Item extra={this.props.hotelMsg["phone"]}>预定热线</List.Item>
           </List>
         </div>
       </div>
