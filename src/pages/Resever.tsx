@@ -38,6 +38,7 @@ interface ReseverProps {
   guestSource?:string
   getReseverList?:Function
   roomData?:Array<any>,
+  ip?:string
 }
 interface ReseverState {
   roomCount: number;
@@ -57,6 +58,7 @@ function mapStateToProps(state) {
     headUrl:state.headUrl,
     guestSource:state.guestSource,
     roomData:state.reseverList,
+    ip:state.ip
     
   };
 }
@@ -183,8 +185,9 @@ export default class Resever extends React.Component<
     );
   }
   private payment= async (event)=>{
-     console.log(this.props.roomData)    
-    try{
+    //这里加了个判断
+     if(this.props.roomData.length==0&&this.isAllEnd()){
+       try{
       if(this.state.name==void 0||this.state.name==''){
         throw new Error('名字不能为空')
       }
@@ -208,10 +211,21 @@ export default class Resever extends React.Component<
         name:this.state.name
       })
       console.log(res)
-      　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.money}&wxId=${this.props.wxId}&domain=${store.getState().ip}`;
+      　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.money}&wxId=${this.props.wxId}&domain=${this.props.ip}`;
     }catch(e){
       Toast.fail(e.message, 1);
       console.log(e.message)
     }
+     }    
+    
+  }
+  private isAllEnd():boolean{
+    let isAllEnd=true
+    this.props.roomData.forEach(e=>{
+      if(!e.isEnd){
+        isAllEnd=false
+      }  
+    })
+    return isAllEnd
   }
 }

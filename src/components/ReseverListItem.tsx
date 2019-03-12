@@ -16,9 +16,12 @@ import {
   Accordion,
   InputItem,
   TextareaItem,
-  Stepper
+  Stepper,
+  Toast
 } from "antd-mobile";
 import "antd-mobile/dist/antd-mobile.css";
+import {submitResever} from './../config/api'
+import {connect} from 'react-redux'
 interface Props {
   name: string;
   count:number;
@@ -29,20 +32,51 @@ interface Props {
   doTime:string;
   userName:string;
   phone:string;
+  obj:any;
+  deleteResever?:Function,
+  wxId?:string
+  ip?:string
 }
-export default function ReserverListItem(props: Props) {
+function mapStateToProps(state) {
+  return {
+    data: state.data,
+    hasLoadCount: state.hasLoadCount,
+    hotelmsg:state.hotelmsg,
+    wxId:state.wxId,
+    ip:state.ip,
+  };
+}
+//需要触发什么行为
+function mapDispatchToProps(dispatch) {
+  return {
+    deleteResever: (data) => dispatch({ type: "deleteResever",data:data }),
+  };
+}
+function ReserverListItem(props: Props) {
   let footer = void 0;
   let header = void 0;
   if (!props.isEnd) {
     footer = (
       <Card.Footer
         content={
-          <Button type="primary" size="small">
+          <Button type="primary" size="small" onClick={async ()=>{
+            try{
+              const res=await submitResever(this.props.obj)
+              console.log(res)
+              　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.props.price}&wxId=${this.props.wxId}&domain=${this.props.ip}`;
+            }catch(e){
+              Toast.fail(e.message, 1);
+              console.log(e.message)
+            }
+          }}>
             立刻支付
           </Button>
         }
         extra={
-          <Button type="warning" size="small">
+          <Button type="warning" size="small" onClick={()=>{
+            this.props.deleteResever()
+            //删除没试过 可能有问题啊=。=
+          }}>
             删除订单
           </Button>
         }
@@ -75,3 +109,4 @@ export default function ReserverListItem(props: Props) {
     </WingBlank>
   );
 }
+ export default connect(ReserverListItem)

@@ -83,6 +83,7 @@ export default class ReseverList extends React.Component<
           userName={e.name}
           doTime={timechange(new Date(e.doTime))}
           phone={e.phone}
+          obj={e}
         />
       );
     });
