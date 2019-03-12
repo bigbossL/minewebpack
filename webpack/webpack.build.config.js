@@ -95,7 +95,7 @@ module.exports = {
             template: path.resolve(__dirname, '../public/index.html'),
             inject: 'body',
         }),
-        new CleanWebpackPlugin(['../dist']),
+        new CleanWebpackPlugin(['dist']),
         // new Uglifyjs()
         // new WebpackDevServer()
     ],

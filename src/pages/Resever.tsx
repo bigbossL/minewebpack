@@ -201,7 +201,7 @@ export default class Resever extends React.Component<
         name:this.state.name
       })
       console.log(res)
-      　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.money}&wxId=${this.props.wxId}&domain${store.getState().ip}`;
+      　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.money}&wxId=${this.props.wxId}&domain=${store.getState().ip}`;
     }catch(e){
       Toast.fail(e.message, 1);
       console.log(e.message)
