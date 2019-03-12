@@ -36,6 +36,6 @@ export function getStayDays(startTime:Date,endTime:Date){
         let sDate2 = endTime.getTime()
         let dateSpan = sDate2 - sDate1
         dateSpan = Math.abs(dateSpan)
-        return Math.floor(dateSpan / (24 * 3600 * 1000))
+        return Math.floor(dateSpan / (24 * 3600 * 1000))>0?Math.floor(dateSpan / (24 * 3600 * 1000)):1
 
 }

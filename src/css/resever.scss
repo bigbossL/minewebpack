@@ -1,14 +1,22 @@
-@import './home.scss';
-.stepper{
-    width:100px;
+@import "./home.scss";
+.stepper {
+  width: 100px;
 }
-.hint{
-    .title{
-        color:#e94f4f;
-        font-size:0.3rem;
-    }
-    .msg{
-        font-size:0.2rem;
-        color:#c4c4c4;
-    }
+.hint {
+  .title {
+    color: #e94f4f;
+    font-size: 0.3rem;
+  }
+  .msg {
+    font-size: 0.2rem;
+    color: #c4c4c4;
+  }
+}
+
+.msghint {
+  font-size: 0.5rem;
+  color: #c4c4c4;
+  width:100%;
+  margin-top:200px;
+  text-align: center;
 }

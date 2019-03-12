@@ -81,6 +81,7 @@ let calendarObj = {
 )
 export default class Home extends React.Component<HomeProps, HomeState> {
   componentDidMount() {
+   
     this.props.loadData();
     this.props.loadHotelMsg();
   }

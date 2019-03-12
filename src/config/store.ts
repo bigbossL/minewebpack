@@ -103,7 +103,6 @@ export const storeConfig = {
       return { ...state, reseverList: data };
     },
     upDateParams: (state, data) => {
-      console.log('upDateParams',data)
       return {
         ...state,
         wxId: data.openid,

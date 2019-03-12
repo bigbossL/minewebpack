@@ -6,7 +6,7 @@ import createSagaMiddleware from 'redux-saga';
 // import {createLogger} from 'redux-logger'
 
 // import rootSaga from './config/saga';
-import {all, fork} from "redux-saga/effects";
+import {all, fork,take} from "redux-saga/effects";
 const sagaMiddleware=createSagaMiddleware();
 
 

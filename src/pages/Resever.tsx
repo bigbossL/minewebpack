@@ -36,6 +36,8 @@ interface ReseverProps {
   nickName?:string
   headUrl?:string
   guestSource?:string
+  getReseverList?:Function
+  roomData?:Array<any>,
 }
 interface ReseverState {
   roomCount: number;
@@ -54,12 +56,17 @@ function mapStateToProps(state) {
     nickName:state.nickName,
     headUrl:state.headUrl,
     guestSource:state.guestSource,
+    roomData:state.reseverList,
     
   };
 }
 //需要触发什么行为
 function mapDispatchToProps(dispatch) {
-  return {};
+  return {
+    getReseverList:(data)=>{
+      dispatch({type:'getReseverList',data:data})
+    },
+  };
 }
 @connect(
   mapStateToProps,
@@ -77,7 +84,7 @@ export default class Resever extends React.Component<
   };
   constructor(props){
     super(props)
-    
+    this.props.getReseverList( {wxId: this.props.wxId})
   }
   get money(): number {
     return this.props.data[this.props.chooseRoomId]['roomPrice'] * this.state.roomCount*getStayDays(this.props.startTime,this.props.endTime);
@@ -176,7 +183,7 @@ export default class Resever extends React.Component<
     );
   }
   private payment= async (event)=>{
-    
+     console.log(this.props.roomData)    
     try{
       if(this.state.name==void 0||this.state.name==''){
         throw new Error('名字不能为空')
