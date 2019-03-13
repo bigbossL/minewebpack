@@ -11,6 +11,7 @@ import {
 import ReseverList from "../pages/ReserverList";
 export const storeConfig = {
   state: {
+    props:void 0,
     data: [],
     hasLoadCount: false,
     hotelmsg: [],
@@ -32,6 +33,9 @@ export const storeConfig = {
     }
   },
   action: {
+    upDataProps:(state,data)=>{
+      return {...state,props:data}
+    },
     init: (state, data) => {
       return { ...storeConfig.state };
     },
@@ -151,6 +155,7 @@ export const storeConfig = {
       while (true) {
         const action = yield take("getReseverList");
         try {
+          console.log('getReseverList',action)
           const res = yield cloudBookGet(action.data);
           yield put({ type: "upDateReseverList", data: res.data });
         } catch (e) {
@@ -161,8 +166,10 @@ export const storeConfig = {
     deleteResever: function*() {
       while (true) {
         const action = yield take("deleteResever");
+        
         try {
           yield deleteResever(action.data);
+          // const res = yield cloudBookGet(action.data.wxId);
         } catch (e) {
           console.log(e.error);
         }

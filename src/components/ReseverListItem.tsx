@@ -20,36 +20,47 @@ import {
   Toast
 } from "antd-mobile";
 import "antd-mobile/dist/antd-mobile.css";
-import {submitResever} from './../config/api'
-import {connect} from 'react-redux'
+import { submitResever } from "./../config/api";
+import { connect } from "react-redux";
 interface Props {
   name: string;
-  count:number;
+  count: number;
   startTime: string;
   endTime: string;
   isEnd: boolean;
-  price:number;
-  doTime:string;
-  userName:string;
-  phone:string;
-  obj:any;
-  deleteResever?:Function,
-  wxId?:string
-  ip?:string
+  price: number;
+  doTime: string;
+  userName: string;
+  phone: string;
+  obj: any;
+  deleteResever?: Function;
+  wxId?: string;
+  ip?: string;
+  getReseverList?: Function;
 }
 function mapStateToProps(state) {
   return {
     data: state.data,
     hasLoadCount: state.hasLoadCount,
-    hotelmsg:state.hotelmsg,
-    wxId:state.wxId,
-    ip:state.ip,
+    hotelmsg: state.hotelmsg,
+    wxId: state.wxId,
+    ip: state.ip
   };
 }
 //需要触发什么行为
 function mapDispatchToProps(dispatch) {
   return {
-    deleteResever: (data) => dispatch({ type: "deleteResever",data:data }),
+    getReseverList: data => {
+      dispatch({ type: "getReseverList", data: data });
+    },
+    deleteResever: (data, callback) =>
+      dispatch({
+        type: "deleteResever",
+        data: data,
+        callback: () => {
+          callback();
+        }
+      })
   };
 }
 function ReserverListItem(props: Props) {
@@ -59,24 +70,41 @@ function ReserverListItem(props: Props) {
     footer = (
       <Card.Footer
         content={
-          <Button type="primary" size="small" onClick={async ()=>{
-            try{
-              const res=await submitResever(this.props.obj)
-              console.log(res)
-              　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.props.price}&wxId=${this.props.wxId}&domain=${this.props.ip}`;
-            }catch(e){
-              Toast.fail(e.message, 1);
-              console.log(e.message)
-            }
-          }}>
+          <Button
+            type="primary"
+            size="small"
+            onClick={async () => {
+              try {
+                const res = await submitResever({ ...props.obj, id: void 0 });
+                console.log(res);
+                window.location.href = `http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${
+                  res.data
+                }&price=${props.price}&wxId=${props.wxId}&domain=${props.ip}`;
+              } catch (e) {
+                Toast.fail(e.message, 1);
+                console.log(e.message);
+              }
+            }}
+          >
             立刻支付
           </Button>
         }
         extra={
-          <Button type="warning" size="small" onClick={()=>{
-            this.props.deleteResever()
-            //删除没试过 可能有问题啊=。=
-          }}>
+          <Button
+            type="warning"
+            size="small"
+            onClick={async () => {
+              try {
+                await props.deleteResever([props.obj]);
+                await props.getReseverList({ wxId: props.wxId });
+                await Toast.success('删除成功',1)
+              } catch (e) {
+                Toast.fail(e.message, 1);
+              }
+
+              //删除没试过 可能有问题啊=。=
+            }}
+          >
             删除订单
           </Button>
         }
@@ -109,4 +137,7 @@ function ReserverListItem(props: Props) {
     </WingBlank>
   );
 }
- export default connect(ReserverListItem)
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(ReserverListItem);

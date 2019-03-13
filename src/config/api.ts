@@ -1,6 +1,6 @@
 import axios from "axios";
 import qs from "qs";
-import {getNowFormatDate} from "./../utils";
+import {timechange} from "./../utils";
 import {takeEvery, put} from "redux-saga/effects";
 import {store} from './../redux'
 
@@ -90,9 +90,10 @@ interface cloudBookGet {
 
 export async function cloudBookGet(props: cloudBookGet) {
     try {
+        console.log('获取订单列表。。。。')
         const res = await axios.post(apiConfig.host() + ASK_FOR_RESEVER_LIST, {
             condition:
-                `wx_id='${props.wxId}' and reach_time>='${getNowFormatDate()}'`
+                `wx_id='${props.wxId}' and reach_time>='${timechange( new Date())}'`
         });
         return res;
     } catch (e) {

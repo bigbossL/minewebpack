@@ -39,6 +39,8 @@ interface HomeProps {
   upDateParams?: Function;
   ip?: string;
   hotelMsg?: any;
+  props?:string;
+  upDataProps?:Function
 }
 interface HomeState {
   startTime: Date;
@@ -52,7 +54,8 @@ function mapStateToProps(state) {
     startTime: state.startTime,
     endTime: state.endTime,
     ip: state.ip,
-    hotelMsg: state.hotelMsg
+    hotelMsg: state.hotelMsg,
+    props:state.props
   };
 }
 //需要触发什么行为
@@ -69,7 +72,8 @@ function mapDispatchToProps(dispatch) {
     setStartTime: time => dispatch({ type: "setStartTime", data: time }),
     setEndTime: time => dispatch({ type: "setEndTime", data: time }),
     init: () => dispatch({ type: "init", data: void 0 }),
-    upDateParams: data => dispatch({ type: "upDateParams", data: data })
+    upDateParams: data => dispatch({ type: "upDateParams", data: data }),
+    upDataProps:data=>dispatch({ type: "upDataProps", data: data })
   };
 }
 let calendarObj = {
@@ -99,6 +103,7 @@ export default class Home extends React.Component<HomeProps, HomeState> {
     this.props.upDateParams(
       JSON.parse(decodeURIComponent(this.props["match"].params.json))
     );
+    this.props.upDataProps(this.props["match"].params.json)
   }
   public render() {
     return (

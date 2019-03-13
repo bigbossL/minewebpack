@@ -38,7 +38,8 @@ interface ReseverProps {
   guestSource?:string
   getReseverList?:Function
   roomData?:Array<any>,
-  ip?:string
+  ip?:string,
+  props?:string
 }
 interface ReseverState {
   roomCount: number;
@@ -58,7 +59,8 @@ function mapStateToProps(state) {
     headUrl:state.headUrl,
     guestSource:state.guestSource,
     roomData:state.reseverList,
-    ip:state.ip
+    ip:state.ip,
+    props:state.props
     
   };
 }
@@ -186,7 +188,8 @@ export default class Resever extends React.Component<
   }
   private payment= async (event)=>{
     //这里加了个判断
-     if(this.props.roomData.length==0&&this.isAllEnd()){
+     if(this.props.roomData.length==0||this.isAllEnd()){
+       console.log('列表没东西')
        try{
       if(this.state.name==void 0||this.state.name==''){
         throw new Error('名字不能为空')
@@ -216,13 +219,17 @@ export default class Resever extends React.Component<
       Toast.fail(e.message, 1);
       console.log(e.message)
     }
-     }    
+     }else{
+       console.log('不行',this.props.roomData)
+       Toast.info('您还有订单未处理',1)
+       window.location.hash=`#/list/${this.props.props}`
+     } 
     
   }
   private isAllEnd():boolean{
     let isAllEnd=true
     this.props.roomData.forEach(e=>{
-      if(!e.isEnd){
+      if(!e.payState){
         isAllEnd=false
       }  
     })
