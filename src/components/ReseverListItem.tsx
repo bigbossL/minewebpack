@@ -96,7 +96,7 @@ function ReserverListItem(props: Props) {
             onClick={async () => {
               try {
                 await props.deleteResever([props.obj]);
-                await props.getReseverList({ wxId: props.wxId });
+                await props.getReseverList({ wxId: props.wxId,date:new Date(new Date().getTime()-1000*60*60*24*7)});
                 await Toast.success('删除成功',1)
               } catch (e) {
                 Toast.fail(e.message, 1);

@@ -60,7 +60,7 @@ export default class ReseverList extends React.Component<
 > {
   componentDidMount() {
     setTimeout(() => {
-      this.props.getReseverList({ wxId: this.props.wxId });
+      this.props.getReseverList({ wxId: this.props.wxId,date:new Date(new Date().getTime()-1000*60*60*24*7)});
     }, 500);
   }
   constructor(props) {

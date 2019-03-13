@@ -88,7 +88,7 @@ export default class Resever extends React.Component<
   };
   constructor(props){
     super(props)
-    this.props.getReseverList( {wxId: this.props.wxId})
+    this.props.getReseverList( {wxId: this.props.wxId,date:new Date()})
   }
   get money(): number {
     return this.props.data[this.props.chooseRoomId]['roomPrice'] * this.state.roomCount*getStayDays(this.props.startTime,this.props.endTime);

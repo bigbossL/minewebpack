@@ -86,14 +86,15 @@ export async function submitResever(props: submitReseverObj) {
 
 interface cloudBookGet {
     wxId: string;
+    date: Date;
 }
 
 export async function cloudBookGet(props: cloudBookGet) {
     try {
-        console.log('获取订单列表。。。。')
+        console.log('获取订单列表。。。。',props)
         const res = await axios.post(apiConfig.host() + ASK_FOR_RESEVER_LIST, {
             condition:
-                `wx_id='${props.wxId}' and reach_time>='${timechange( new Date(new Date().getTime()-1000*60*60*24*7))}'`
+                `wx_id='${props.wxId}' and reach_time>='${timechange(props.date)}'`
         });
         return res;
     } catch (e) {
