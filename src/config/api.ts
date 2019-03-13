@@ -93,7 +93,7 @@ export async function cloudBookGet(props: cloudBookGet) {
         console.log('获取订单列表。。。。')
         const res = await axios.post(apiConfig.host() + ASK_FOR_RESEVER_LIST, {
             condition:
-                `wx_id='${props.wxId}' and reach_time>='${timechange( new Date())}'`
+                `wx_id='${props.wxId}' and reach_time>='${timechange( new Date(new Date().getTime()-1000*60*60*24*7))}'`
         });
         return res;
     } catch (e) {
