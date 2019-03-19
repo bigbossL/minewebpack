@@ -46,7 +46,7 @@ interface HomeState {
       <div className="homelist-item">
         <img src={e.cloudPic} className="img" />
         <p className="price">￥{e.roomPrice} </p>
-        {/* <p className="breakfast">早餐</p> */}
+        <p className="breakfast">{e.roomCategory}</p>
       </div>
     );
     let items = [];
@@ -65,8 +65,8 @@ interface HomeState {
     homeArr.push(
       <div>
         {homeContext}
-        <Accordion>
-          <Accordion.Panel header={e.roomCategory}>
+        {/* <Accordion>
+          <Accordion.Panel header={e.roomCategory}> */}
             <List>
               <div className="romelist-item">
                 <div className="price-type">{e.protocol}</div>
@@ -86,8 +86,8 @@ interface HomeState {
                
               </div>
             </List>
-          </Accordion.Panel>
-        </Accordion>
+          {/* </Accordion.Panel>
+        </Accordion> */}
         <WhiteSpace />
       </div>
     );
