@@ -1,6 +1,6 @@
 import * as React from "react";
 import { render } from "react-dom";
-import {submitResever} from './../config/api'
+import { submitResever } from "./../config/api";
 import {
   Flex,
   Button,
@@ -24,22 +24,22 @@ import "./../css/resever.scss";
 import "antd-mobile/dist/antd-mobile.css";
 import RoomInfo from "./../components/RoomInfo";
 import { connect } from "react-redux";
-import {timechange,getStayDays} from './../utils'
-import {store} from "../redux";
+import { timechange, getStayDays } from "./../utils";
+import { store } from "../redux";
 
 interface ReseverProps {
   startTime?: Date;
   endTime?: Date;
   data?: Array<any>;
   chooseRoomId?: number;
-  wxId?:string
-  nickName?:string
-  headUrl?:string
-  guestSource?:string
-  getReseverList?:Function
-  roomData?:Array<any>,
-  ip?:string,
-  props?:string
+  wxId?: string;
+  nickName?: string;
+  headUrl?: string;
+  guestSource?: string;
+  getReseverList?: Function;
+  roomData?: Array<any>;
+  ip?: string;
+  props?: string;
 }
 interface ReseverState {
   roomCount: number;
@@ -54,22 +54,21 @@ function mapStateToProps(state) {
     chooseRoomId: state.chooseRoomId,
     startTime: state.startTime,
     endTime: state.endTime,
-    wxId:state.wxId,
-    nickName:state.nickName,
-    headUrl:state.headUrl,
-    guestSource:state.guestSource,
-    roomData:state.reseverList,
-    ip:state.ip,
-    props:state.props
-    
+    wxId: state.wxId,
+    nickName: state.nickName,
+    headUrl: state.headUrl,
+    guestSource: state.guestSource,
+    roomData: state.reseverList,
+    ip: state.ip,
+    props: state.props
   };
 }
 //需要触发什么行为
 function mapDispatchToProps(dispatch) {
   return {
-    getReseverList:(data)=>{
-      dispatch({type:'getReseverList',data:data})
-    },
+    getReseverList: data => {
+      dispatch({ type: "getReseverList", data: data });
+    }
   };
 }
 @connect(
@@ -84,38 +83,46 @@ export default class Resever extends React.Component<
     roomCount: 1,
     name: void 0,
     phone: void 0,
-    context: '',
+    context: ""
   };
-  constructor(props){
-    super(props)
-    this.props.getReseverList( {wxId: this.props.wxId,date:new Date()})
+  constructor(props) {
+    super(props);
+    this.props.getReseverList({ wxId: this.props.wxId, date: new Date() });
+    console.log("reseverprops", this.props.data, this.props.chooseRoomId);
   }
   get money(): number {
-    return this.props.data[this.props.chooseRoomId]['roomPrice'] * this.state.roomCount*getStayDays(this.props.startTime,this.props.endTime);
+    return (
+      this.props.data.find(e => {
+        return e.id == this.props.chooseRoomId;
+      })["roomPrice"] *
+      this.state.roomCount *
+      getStayDays(this.props.startTime, this.props.endTime)
+    );
   }
-  get itemdata():any{
-    let arr=void 0;
-    this.props.data.forEach(e=>{
-      if(e.id==this.props.chooseRoomId){
-        arr={...e}
+  get itemdata(): any {
+    let arr = void 0;
+    this.props.data.forEach(e => {
+      if (e.id == this.props.chooseRoomId) {
+        arr = { ...e };
       }
-    })
-    return arr
+    });
+    return arr;
   }
-  
 
   public render() {
     return (
       <div>
         <RoomInfo
-          img={this.itemdata['cloudPic']}
-          hotelName={this.itemdata['roomCategory']}
-          name={this.itemdata['roomCategory']}
-          price={this.itemdata['roomPrice']}
+          img={this.itemdata["cloudPic"]}
+          hotelName={this.itemdata["roomCategory"]}
+          name={this.itemdata["roomCategory"]}
+          price={this.itemdata["roomPrice"]}
         />
         <WhiteSpace />
         <List>
-          <List.Item extra={timechange(this.props.startTime)}>开始时间</List.Item>
+          <List.Item extra={timechange(this.props.startTime)}>
+            开始时间
+          </List.Item>
           <List.Item extra={timechange(this.props.endTime)}>结束时间</List.Item>
           <InputItem
             clear
@@ -145,7 +152,11 @@ export default class Resever extends React.Component<
                 className="stepper"
                 value={this.state.roomCount}
                 min={1}
-                max={this.props.data[this.props.chooseRoomId]['remain']}
+                max={
+                  this.props.data.find(e => {
+                    return e.id == this.props.chooseRoomId;
+                  })["remain"]
+                }
                 onChange={count => {
                   this.setState({ roomCount: count });
                 }}
@@ -155,11 +166,11 @@ export default class Resever extends React.Component<
           <TextareaItem
             title="特殊要求"
             value={this.state.context}
-            onChange={e=>{
+            onChange={e => {
               this.setState({
-                context:e
-              })
-              console.log(this.state)
+                context: e
+              });
+              console.log(this.state);
             }}
             // placeholder="click the button below to focus"
             data-seed="logId"
@@ -180,59 +191,62 @@ export default class Resever extends React.Component<
         </WingBlank>
         <WhiteSpace />
         <WingBlank>
-          <Button type="primary" onClick={this.payment}>确认付款</Button>
+          <Button type="primary" onClick={this.payment}>
+            确认付款
+          </Button>
         </WingBlank>
         <WhiteSpace />
       </div>
     );
   }
-  private payment= async (event)=>{
+  private payment = async event => {
     //这里加了个判断
-     if(this.props.roomData.length==0||this.isAllEnd()){
-       console.log('列表没东西')
-       try{
-      if(this.state.name==void 0||this.state.name==''){
-        throw new Error('名字不能为空')
+    if (this.props.roomData.length == 0 || this.isAllEnd()) {
+      console.log("列表没东西");
+      try {
+        if (this.state.name == void 0 || this.state.name == "") {
+          throw new Error("名字不能为空");
+        }
+        if (this.state.phone == void 0 || this.state.phone == "") {
+          throw new Error("手机号不能为空");
+        }
+        const res = await submitResever({
+          wxId: this.props.wxId,
+          nickName: this.props.nickName,
+          headUrl: this.props.guestSource,
+          guestSource: this.props.guestSource,
+          doTime: new Date(),
+          reachTime: this.props.startTime,
+          leaveTime: this.props.endTime,
+          price: this.money,
+          protocol: this.itemdata["protocol"],
+          roomCategory: this.itemdata["roomCategory"],
+          remain: this.state.context,
+          num: this.state.roomCount,
+          phone: this.state.phone,
+          name: this.state.name
+        });
+        console.log(res);
+        window.location.href = `http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${
+          res.data
+        }&price=${this.money}&wxId=${this.props.wxId}&domain=${this.props.ip}`;
+      } catch (e) {
+        Toast.fail(e.message, 1);
+        console.log(e.message);
       }
-      if(this.state.phone==void 0||this.state.phone==''){
-        throw new Error('手机号不能为空')
-      }
-      const res=await submitResever({
-        wxId:this.props.wxId,
-        nickName:this.props.nickName,
-        headUrl:this.props.guestSource,
-        guestSource:this.props.guestSource,
-        doTime:new Date(),
-        reachTime:this.props.startTime,
-        leaveTime:this.props.endTime,
-        price:this.money,
-        protocol:this.itemdata['protocol'],
-        roomCategory:this.itemdata['roomCategory'],
-        remain:this.state.context,
-        num:this.state.roomCount,
-        phone:this.state.phone,
-        name:this.state.name
-      })
-      console.log(res)
-      　window.location.href=`http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${res.data}&price=${this.money}&wxId=${this.props.wxId}&domain=${this.props.ip}`;
-    }catch(e){
-      Toast.fail(e.message, 1);
-      console.log(e.message)
+    } else {
+      console.log("不行", this.props.roomData);
+      Toast.info("您还有订单未处理", 1);
+      window.location.hash = `#/list/${this.props.props}`;
     }
-     }else{
-       console.log('不行',this.props.roomData)
-       Toast.info('您还有订单未处理',1)
-       window.location.hash=`#/list/${this.props.props}`
-     } 
-    
-  }
-  private isAllEnd():boolean{
-    let isAllEnd=true
-    this.props.roomData.forEach(e=>{
-      if(!e.payState){
-        isAllEnd=false
-      }  
-    })
-    return isAllEnd
+  };
+  private isAllEnd(): boolean {
+    let isAllEnd = true;
+    this.props.roomData.forEach(e => {
+      if (!e.payState) {
+        isAllEnd = false;
+      }
+    });
+    return isAllEnd;
   }
 }

@@ -14,14 +14,14 @@
     .price{
         position: absolute;
         color:#488AFF;
-        font-size:0.4rem;
+        font-size:0.5rem;
         right:5%;
         bottom:5%;
     }
     .breakfast{
         position: absolute;
         color:black;
-        font-size:0.4rem;
+        font-size:0.5rem;
         left:5%;
         bottom:5%;
     }
@@ -30,7 +30,7 @@
 .homename{
     background-color:#488AFF;
     color:white;
-    font-size:0.2rem;
+    font-size:0.4rem;
 }
 
 .romelist-item{
@@ -42,19 +42,19 @@
         @include vertical-center;
         background-color:#488AFF;
         color:white;
-        font-size:0.2rem;
+        font-size:0.4rem;
         left:5%;
     }
     .count{
         @include vertical-center;
         color:black;
-        font-size:0.2rem;
+        font-size:0.4rem;
         left:20%
     }
     .price{
         @include vertical-center;
         color:#488AFF;
-        font-size:0.3rem;
+        font-size:0.4rem;
         right:25%;
 
     }
