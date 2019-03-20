@@ -58,6 +58,20 @@ export const storeConfig = {
       console.log("updataTime", newdata);
       return { ...state, data: newdata, hasLoadCount: true };
     },
+    updataImg: (state, data) => {
+      let newdata = [...state.data];
+      for (let i = 0; i < newdata.length; i++) {
+        for (let j = 0; j < data.length; j++) {
+          if (newdata[i].roomCategory == data[j].category) {
+      
+            newdata[i]["cloudPic"] = data[j].cloudPic;
+          }
+        }
+      }
+
+      console.log("updataTime", newdata);
+      return { ...state, data: newdata};
+    },
     updateHotleMsg: (state, data) => {
       console.log("updateHotleMsg");
       let imgArr = [];
@@ -124,6 +138,17 @@ export const storeConfig = {
           const res = yield cloudBookProtocolGet();
           yield put({ type: "updata", data: res.data });
           console.log("success", res);
+        } catch (e) {
+          console.log(e.error);
+        }
+      }
+    },
+    getRoomImg: function*() {
+      while (true) {
+        const action = yield take("getRoomImg");
+        try {
+          const res = yield getRoomCategoryRemain(action.data);
+          yield put({ type: "updataImg", data: res.data });
         } catch (e) {
           console.log(e.error);
         }

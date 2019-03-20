@@ -40,7 +40,8 @@ interface HomeProps {
   ip?: string;
   hotelMsg?: any;
   props?:string;
-  upDataProps?:Function
+  upDataProps?:Function;
+  getRoomImg?:Function;
 }
 interface HomeState {
   startTime: Date;
@@ -55,7 +56,8 @@ function mapStateToProps(state) {
     endTime: state.endTime,
     ip: state.ip,
     hotelMsg: state.hotelMsg,
-    props:state.props
+    props:state.props,
+    
   };
 }
 //需要触发什么行为
@@ -73,7 +75,11 @@ function mapDispatchToProps(dispatch) {
     setEndTime: time => dispatch({ type: "setEndTime", data: time }),
     init: () => dispatch({ type: "init", data: void 0 }),
     upDateParams: data => dispatch({ type: "upDateParams", data: data }),
-    upDataProps:data=>dispatch({ type: "upDataProps", data: data })
+    upDataProps:data=>dispatch({ type: "upDataProps", data: data }),
+    getRoomImg:(beginTime: any, endTime: any)=>dispatch({
+      type: "getRoomImg",
+      data: { beginTime: beginTime, endTime: endTime }
+    })
   };
 }
 let calendarObj = {
@@ -85,9 +91,16 @@ let calendarObj = {
 )
 export default class Home extends React.Component<HomeProps, HomeState> {
   componentDidMount() {
-   
-    this.props.loadData();
-    this.props.loadHotelMsg();
+    this.load()
+  }
+  private load= async()=>{
+    try{
+       await this.props.loadData();
+       await this.props.loadHotelMsg();
+       await this.props.getRoomImg(this.nowDate,this.nowDate);
+    }catch(e){
+      throw e
+    }
   }
   get nowDate(): Date {
     return new Date();
@@ -156,11 +169,11 @@ export default class Home extends React.Component<HomeProps, HomeState> {
             </DatePicker>
           </List>
           <WhiteSpace />
-          {this.props.hasLoadCount ? (
+          {/* {this.props.hasLoadCount ? ( */}
             <HomeList homeProps={this.props.data} />
-          ) : (
+          {/* ) : (
             <div />
-          )}
+          )} */}
           <WhiteSpace />
           <List>
             <List.Item extra={this.props.hotelMsg["phone"]}>预定热线</List.Item>

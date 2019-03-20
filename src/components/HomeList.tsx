@@ -65,9 +65,7 @@ interface HomeState {
     homeArr.push(
       <div>
         {homeContext}
-        {/* <Accordion>
-          <Accordion.Panel header={e.roomCategory}> */}
-            <List>
+        {props.hasLoadCount?(  <List>
               <div className="romelist-item">
                 <div className="price-type">{e.protocol}</div>
                 <div className="count">剩余:{e.remain}</div>
@@ -85,9 +83,7 @@ interface HomeState {
                   </Button>
                
               </div>
-            </List>
-          {/* </Accordion.Panel>
-        </Accordion> */}
+            </List>):(<div/>)}
         <WhiteSpace />
       </div>
     );
