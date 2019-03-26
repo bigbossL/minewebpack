@@ -78,8 +78,8 @@ function ReserverListItem(props: Props) {
                 const res = await submitResever({ ...props.obj, id: void 0 });
                 console.log(res);
                 window.location.href = `http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${
-                  res.data
-                }&price=${props.price}&wxId=${props.wxId}&domain=${props.ip}`;
+                  res.data.bookSerial
+                }&price=${res.data.price}&wxId=${props.wxId}&domain=${props.ip}`;
               } catch (e) {
                 Toast.fail(e.message, 1);
                 console.log(e.message);
