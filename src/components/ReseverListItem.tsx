@@ -33,6 +33,7 @@ interface Props {
   userName: string;
   phone: string;
   obj: any;
+  bookSerial:string
   deleteResever?: Function;
   wxId?: string;
   ip?: string;
@@ -75,11 +76,11 @@ function ReserverListItem(props: Props) {
             size="small"
             onClick={async () => {
               try {
-                const res = await submitResever({ ...props.obj, id: void 0 });
-                console.log(res);
+                // const res = await submitResever({ ...props.obj, id: void 0 });
+                // console.log(res);
                 window.location.href = `http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${
-                  res.data.bookSerial
-                }&price=${res.data.price}&wxId=${props.wxId}&domain=${props.ip}`;
+                  props.bookSerial
+                }&price=${props.price}&wxId=${props.wxId}&domain=${props.ip}`;
               } catch (e) {
                 Toast.fail(e.message, 1);
                 console.log(e.message);
