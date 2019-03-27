@@ -227,7 +227,7 @@ export default class Resever extends React.Component<
           name: this.state.name
         });
         console.log(res);
-        let resultJson=JSON.parse(res.data);
+        let resultJson=res.data;
         window.location.href = `http://sygdsoft.com/sygd2/wechatPayCreate?orderId=${
             resultJson.bookSerial
         }&price=${resultJson.price}&wxId=${this.props.wxId}&domain=${this.props.ip}`;
