@@ -12,7 +12,7 @@ export default function RoomInfo(props:Props){
         <div className="roomitem">
         <img src={props.img} className="img" />
         <p className="price">￥{props.price}</p>
-        <p className="name">{props.hotelName}-{props.name}</p>
+        <p className="name">{props.hotelName}</p>
       </div>
     )
 } 

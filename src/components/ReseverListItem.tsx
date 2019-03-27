@@ -33,7 +33,7 @@ interface Props {
   userName: string;
   phone: string;
   obj: any;
-  bookSerial:string
+  bookSerial: string;
   deleteResever?: Function;
   wxId?: string;
   ip?: string;
@@ -97,8 +97,15 @@ function ReserverListItem(props: Props) {
             onClick={async () => {
               try {
                 await props.deleteResever([props.obj]);
-                await props.getReseverList({ wxId: props.wxId,date:new Date(new Date().getTime()-1000*60*60*24*7)});
-                await Toast.success('删除成功',1)
+                await Toast.success("删除成功", 1);
+                setTimeout(() => {
+                  props.getReseverList({
+                    wxId: props.wxId,
+                    date: new Date(
+                      new Date().getTime() - 1000 * 60 * 60 * 24 * 7
+                    )
+                  });
+                }, 500);
               } catch (e) {
                 Toast.fail(e.message, 1);
               }

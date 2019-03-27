@@ -139,6 +139,7 @@ export const storeConfig = {
       return { ...state, endTime: data };
     },
     upDateReseverList: (state, data) => {
+      console.log('刷新订单',data)
       return { ...state, reseverList: data };
     },
     upDateParams: (state, data) => {
@@ -204,6 +205,7 @@ export const storeConfig = {
           console.log('getReseverList',action)
           const res = yield cloudBookGet(action.data);
           yield put({ type: "upDateReseverList", data: res.data });
+          console.log('获取订单',res.data)
         } catch (e) {
           console.log(e.error);
         }
@@ -212,9 +214,10 @@ export const storeConfig = {
     deleteResever: function*() {
       while (true) {
         const action = yield take("deleteResever");
-        
+      
         try {
-          yield deleteResever(action.data);
+          yield deleteResever(action.data);  
+          console.log('删除订单')
           // const res = yield cloudBookGet(action.data.wxId);
         } catch (e) {
           console.log(e.error);
