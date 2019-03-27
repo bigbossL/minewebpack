@@ -42,12 +42,29 @@ interface HomeState {
   let homeArr = [];
   console.log(props)
   props.homeProps.forEach(e => {
+    let priceArr=[]
+    e.priceArr.forEach(el=>{
+      priceArr.push( 
+      <div className="romelist-item">
+      <div className="price-type">{el.type}</div>
+      <div className="price">￥{el.price}</div>
+    </div>)
+    })
     let homeContext = (
-      <div className="homelist-item">
+      <div>
+         <div className="homelist-item">
         <img src={e.cloudPic} className="img" />
-        <p className="price">￥{e.roomPrice} </p>
+        {/* <p className="price">￥{e.roomPrice} </p> */}
         <p className="breakfast">{e.roomCategory}</p>
       </div>
+      <List>
+      {priceArr}
+        {/* <List.Item extra={'extra content'}>
+        Title
+        </List.Item> */}
+      </List>
+      </div>
+     
     );
     let items = [];
     // e.roomList.forEach(el => {
@@ -67,7 +84,7 @@ interface HomeState {
         {homeContext}
         {props.hasLoadCount?(  <List>
               <div className="romelist-item">
-                <div className="price-type">{e.protocol}</div>
+                {/* <div className="price-type">{e.protocol}</div> */}
                 <div className="count">剩余:{e.remain}</div>
                 {/* <div className="price">￥{props.roomPrice}</div> */}
                

@@ -42,7 +42,28 @@ export const storeConfig = {
     updata: (state, data) => {
       // let newdata = { ...state };
       // newdata.data = data;
-      return {...state,data:data};
+      let newData=new Array() 
+      data.forEach(e => {
+        let oldData=newData.find(el=>{
+          return el.roomCategory==e.roomCategory
+        })
+        if(oldData==null){
+          let newe={...e,priceArr:[{
+            type:e.protocol,
+            price:e.roomPrice
+          }]}
+          newData.push(newe)
+        }
+        else{
+          oldData['priceArr'].push({
+            type:e.protocol,
+            price:e.roomPrice
+          })
+        }
+        
+      });
+      console.log('newDAta',newData)
+      return {...state,data:newData};
     },
     updataTime: (state, data) => {
       let newdata = [...state.data];
